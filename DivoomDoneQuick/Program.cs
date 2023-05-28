@@ -176,10 +176,20 @@ for (int i = 0; i < 60; i++) // Maximum 60 frames
         }
     } 
 }
+
+#if DEBUG
 await outputCollection.WriteAsync("gdq.gif");
+#endif
+
+MemoryStream memoryStream = new MemoryStream();
+await outputCollection.WriteAsync(memoryStream, MagickFormat.Gif);
+
+memoryStream.Position = 0;
+byte[] byteData = new byte[memoryStream.Length];
+await memoryStream.ReadAsync(byteData, 0, byteData.Length);
 
 var httpClient = new HttpClient();
-var byteArrayContent = new ByteArrayContent(File.ReadAllBytes("gdq.gif"));
+var byteArrayContent = new ByteArrayContent(byteData);
 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 byteArrayContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/gif");
 
