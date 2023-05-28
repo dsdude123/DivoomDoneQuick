@@ -16,6 +16,8 @@ string scheduleOne = "NO DATA";
 string scheduleTwo = " ";
 string scheduleThree = " ";
 
+var currentTime = DateTime.Now;
+
 try
 {
     var web = new HtmlWeb();
@@ -36,7 +38,7 @@ try
         var title = cells[0].InnerText.Replace("\n", "");
         var time = DateTime.Parse(cells[5].InnerText);
 
-        if (time <= DateTime.Now)
+        if (time <= currentTime)
         {
             scheduleOne = $"NOW - {title}";
         } else if (scheduleOne.Equals("NO DATA")) // The first row is in the future
@@ -106,6 +108,16 @@ if (eventName.Length < 15) // 15 characters visible
 var baseImage = new MagickImage("base.png");
 var outputCollection = new MagickImageCollection();
 
+/*
+ * We wait for 20 frames and then scroll in the remaining 40.
+ * If the text is longer than the number of frames, try to scroll at higher speed to
+ * get all the text in. 
+ */
+var eventNameRemoveRate = eventName.Length > 40 ? ((int)Math.Ceiling(eventName.Length / 40.0)) : 1;
+var scheduleOneRemoveRate = scheduleOne.Length > 40 ? ((int)Math.Ceiling(scheduleOne.Length / 40.0)) : 1;
+var scheduleTwoRemoveRate = scheduleTwo.Length > 40 ? ((int)Math.Ceiling(scheduleTwo.Length / 40.0)) : 1;
+var scheduleThreeRemoveRate = scheduleThree.Length > 40 ? ((int)Math.Ceiling(scheduleThree.Length / 40.0)) : 1;
+
 for (int i = 0; i < 60; i++) // Maximum 60 frames
 {
     MagickImage image = new MagickImage(baseImage);
@@ -117,11 +129,11 @@ for (int i = 0; i < 60; i++) // Maximum 60 frames
     var safeScheduleThreeText = scheduleThree.Length <= 15 ? scheduleThree : scheduleThree.Substring(0, 16);
 
     // Render and composite the text onto the base
-    var eventTitleImage = new MagickImage($"caption:{safeEventText}", eventTextSettings);
-    var donationImage = new MagickImage($"caption:{donations}", donationTextSettings);
-    var scheduleOneImage = new MagickImage($"caption:{safeScheduleOneText}", scheduleTextSettings);
-    var scheduleTwoImage = new MagickImage($"caption:{safeScheduleTwoText}", scheduleTextSettings);
-    var scheduleThreeImage = new MagickImage($"caption:{safeScheduleThreeText}", scheduleTextSettings);
+    var eventTitleImage = new MagickImage($"label:{safeEventText}", eventTextSettings);
+    var donationImage = new MagickImage($"label:{donations}", donationTextSettings);
+    var scheduleOneImage = new MagickImage($"label:{safeScheduleOneText}", scheduleTextSettings);
+    var scheduleTwoImage = new MagickImage($"label:{safeScheduleTwoText}", scheduleTextSettings);
+    var scheduleThreeImage = new MagickImage($"label:{safeScheduleThreeText}", scheduleTextSettings);
 
     image.Composite(eventTitleImage, 2, 22, CompositeOperator.SrcOver);
     image.Composite(donationImage, 2, 30, CompositeOperator.SrcOver);
@@ -129,31 +141,31 @@ for (int i = 0; i < 60; i++) // Maximum 60 frames
     image.Composite(scheduleTwoImage, 2, 45, CompositeOperator.SrcOver);
     image.Composite(scheduleThreeImage, 2, 53, CompositeOperator.SrcOver);
     image.SetBitDepth(8);
-    //image.AnimationDelay = 12;
     outputCollection.Add(new MagickImage(image));
 
-    // If the text is longer than our limit, wait for a bit and then scroll it
+    // If the text is longer than our limit, wait for a bit (20 frames) and then scroll it
 
-    if (i > 20)
+    if (i > 19)
     {
+        
         if (eventName.Length > 15)
         {
-            eventName = eventName.Remove(0, 1);
+            eventName = eventName.Remove(0, eventNameRemoveRate);
         }
 
         if (scheduleOne.Length > 15)
         {
-            scheduleOne = scheduleOne.Remove(0, 1);
+            scheduleOne = scheduleOne.Remove(0, scheduleOneRemoveRate);
         }
 
         if (scheduleTwo.Length > 15)
         {
-            scheduleTwo = scheduleTwo.Remove(0, 1);
+            scheduleTwo = scheduleTwo.Remove(0, scheduleTwoRemoveRate);
         }
 
         if (scheduleThree.Length > 15)
         {
-            scheduleThree = scheduleThree.Remove(0, 1);
+            scheduleThree = scheduleThree.Remove(0, scheduleThreeRemoveRate);
         }
     } 
 }
