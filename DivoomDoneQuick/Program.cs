@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using ImageMagick;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -56,6 +57,12 @@ try
 {
     Console.WriteLine("Failed to get data from GDQ tracker.");
 }
+
+eventName = WebUtility.HtmlDecode(eventName);
+donations = WebUtility.HtmlDecode(donations);
+scheduleOne = WebUtility.HtmlDecode(scheduleOne);
+scheduleTwo = WebUtility.HtmlDecode(scheduleTwo);
+scheduleThree = WebUtility.HtmlDecode(scheduleThree);
 
 var donationTextSettings = new MagickReadSettings
 {
