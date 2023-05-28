@@ -55,7 +55,6 @@ try
     Console.WriteLine("Failed to get data from GDQ tracker.");
 }
 
-
 var donationTextSettings = new MagickReadSettings
 {
     TextEncoding = Encoding.Unicode,
@@ -65,7 +64,7 @@ var donationTextSettings = new MagickReadSettings
     FillColor = MagickColors.LimeGreen,
     BackgroundColor = MagickColors.Black,
     TextGravity = Gravity.Center,
-    Width = 51,
+    Width = 59,
     Height = 5
 };
 
@@ -125,7 +124,7 @@ for (int i = 0; i < 60; i++) // Maximum 60 frames
     var scheduleThreeImage = new MagickImage($"caption:{safeScheduleThreeText}", scheduleTextSettings);
 
     image.Composite(eventTitleImage, 2, 22, CompositeOperator.SrcOver);
-    image.Composite(donationImage, 8, 30, CompositeOperator.SrcOver);
+    image.Composite(donationImage, 2, 30, CompositeOperator.SrcOver);
     image.Composite(scheduleOneImage, 2, 37, CompositeOperator.SrcOver);
     image.Composite(scheduleTwoImage, 2, 45, CompositeOperator.SrcOver);
     image.Composite(scheduleThreeImage, 2, 53, CompositeOperator.SrcOver);
@@ -158,7 +157,7 @@ for (int i = 0; i < 60; i++) // Maximum 60 frames
         }
     } 
 }
-outputCollection.Write("gdq.gif");
+await outputCollection.WriteAsync("gdq.gif");
 
 var httpClient = new HttpClient();
 var byteArrayContent = new ByteArrayContent(File.ReadAllBytes("gdq.gif"));
