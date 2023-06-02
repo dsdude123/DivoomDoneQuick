@@ -136,6 +136,13 @@ for (int i = 0; i < 60; i++) // Maximum 60 frames
     var safeScheduleTwoText = scheduleTwo.Length <= 15 ? scheduleTwo : scheduleTwo.Substring(0, 16);
     var safeScheduleThreeText = scheduleThree.Length <= 15 ? scheduleThree : scheduleThree.Substring(0, 16);
 
+    // Prevent ImageMagick escaping
+    safeEventText = safeEventText.Replace("%", "\\%");
+    safeScheduleOneText = safeScheduleOneText.Replace("%", "\\%");
+    safeScheduleTwoText = safeScheduleTwoText.Replace("%", "\\%");
+    safeScheduleThreeText = safeScheduleThreeText.Replace("%", "\\%");
+
+
     // Render and composite the text onto the base
     var eventTitleImage = new MagickImage($"label:{safeEventText}", eventTextSettings);
     var donationImage = new MagickImage($"label:{donations}", donationTextSettings);
