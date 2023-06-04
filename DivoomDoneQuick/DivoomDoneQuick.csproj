@@ -18,6 +18,9 @@
     <None Update="base.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="PICO-8 mono.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
