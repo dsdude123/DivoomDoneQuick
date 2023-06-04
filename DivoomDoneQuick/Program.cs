@@ -144,17 +144,36 @@ for (int i = 0; i < 60; i++) // Maximum 60 frames
 
 
     // Render and composite the text onto the base
-    var eventTitleImage = new MagickImage($"label:{safeEventText}", eventTextSettings);
-    var donationImage = new MagickImage($"label:{donations}", donationTextSettings);
-    var scheduleOneImage = new MagickImage($"label:{safeScheduleOneText}", scheduleTextSettings);
-    var scheduleTwoImage = new MagickImage($"label:{safeScheduleTwoText}", scheduleTextSettings);
-    var scheduleThreeImage = new MagickImage($"label:{safeScheduleThreeText}", scheduleTextSettings);
+    if (!string.IsNullOrWhiteSpace(safeEventText))
+    {
+        var eventTitleImage = new MagickImage($"label:{safeEventText}", eventTextSettings);
+        image.Composite(eventTitleImage, 2, 22, CompositeOperator.SrcOver);
+    }
 
-    image.Composite(eventTitleImage, 2, 22, CompositeOperator.SrcOver);
-    image.Composite(donationImage, 2, 30, CompositeOperator.SrcOver);
-    image.Composite(scheduleOneImage, 2, 37, CompositeOperator.SrcOver);
-    image.Composite(scheduleTwoImage, 2, 45, CompositeOperator.SrcOver);
-    image.Composite(scheduleThreeImage, 2, 53, CompositeOperator.SrcOver);
+    if (!string.IsNullOrWhiteSpace(donations))
+    {
+        var donationImage = new MagickImage($"label:{donations}", donationTextSettings);
+        image.Composite(donationImage, 2, 30, CompositeOperator.SrcOver);
+    }
+
+    if (!string.IsNullOrWhiteSpace(safeScheduleOneText))
+    {
+        var scheduleOneImage = new MagickImage($"label:{safeScheduleOneText}", scheduleTextSettings);
+        image.Composite(scheduleOneImage, 2, 37, CompositeOperator.SrcOver);
+    }
+
+    if (!string.IsNullOrWhiteSpace(safeScheduleTwoText))
+    {
+        var scheduleTwoImage = new MagickImage($"label:{safeScheduleTwoText}", scheduleTextSettings);
+        image.Composite(scheduleTwoImage, 2, 45, CompositeOperator.SrcOver);
+    }
+
+    if (!string.IsNullOrWhiteSpace(safeScheduleThreeText))
+    {
+        var scheduleThreeImage = new MagickImage($"label:{safeScheduleThreeText}", scheduleTextSettings);
+        image.Composite(scheduleThreeImage, 2, 53, CompositeOperator.SrcOver);
+    }
+
     image.SetBitDepth(8);
     outputCollection.Add(new MagickImage(image));
 
