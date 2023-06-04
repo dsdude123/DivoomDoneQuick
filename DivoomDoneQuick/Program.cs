@@ -4,66 +4,22 @@ using ImageMagick;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using DivoomDoneQuick;
+using Newtonsoft.Json;
 
-string runsUrl = "https://gamesdonequick.com/tracker/runs/SGDQ2023";
-string donationsUrl = "https://gamesdonequick.com/tracker/donations/SGDQ2023";
+Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
 string donationXpath = "/html/body/div[1]/h3";
 string runsXpath = "/html/body/div[1]/table";
 string eventXpath = "/html/body/div[1]/h2";
 
-string eventName = "NO EVENT FOUND";
-string donations = "$0000000.00";
+string eventName = "NO EVENT NAME FOUND";
+string donations = "$0.00";
 
-string scheduleOne = "NO DATA";
+string scheduleOne = " ";
 string scheduleTwo = " ";
 string scheduleThree = " ";
 
 var currentTime = DateTime.Now;
-
-try
-{
-    var web = new HtmlWeb();
-    var runsPage = web.Load(runsUrl);
-    var donationsPage = web.Load(donationsUrl);
-
-    var eventRawText = runsPage.DocumentNode.SelectSingleNode(eventXpath);
-    eventName = eventRawText.InnerText.Replace("Run Index\n&mdash;\n", "").Trim();
-    
-    var donationsRawText = donationsPage.DocumentNode.SelectSingleNode(donationXpath);
-    donations = donationsRawText.InnerText.Replace("\n\nTotal (Count):\n", "").Split(" ")[0];
-
-    var runsTable = runsPage.DocumentNode.SelectSingleNode(runsXpath);
-
-    foreach(var row in runsTable.SelectNodes("tr"))
-    {
-        var cells = row.SelectNodes("td");
-        var title = cells[0].InnerText.Replace("\n", "");
-        var time = DateTime.Parse(cells[5].InnerText);
-
-        if (time <= currentTime)
-        {
-            scheduleOne = $"NOW - {title}";
-        } else if (scheduleOne.Equals("NO DATA")) // The first row is in the future
-        {
-            scheduleOne = $"{time.ToString("t")} - {title}";
-        } else if (scheduleTwo.Equals(" "))
-        {
-            scheduleTwo = $"{time.ToString("t")} - {title}";
-        } else if (scheduleThree.Equals(" "))
-        {
-            scheduleThree = $"{time.ToString("t")} - {title}";
-        }
-    }
-} catch (Exception e)
-{
-    Console.WriteLine("Failed to get data from GDQ tracker.");
-}
-
-eventName = WebUtility.HtmlDecode(eventName).RemoveDiacritics(); 
-donations = WebUtility.HtmlDecode(donations).RemoveDiacritics();
-scheduleOne = WebUtility.HtmlDecode(scheduleOne).RemoveDiacritics();
-scheduleTwo = WebUtility.HtmlDecode(scheduleTwo).RemoveDiacritics();
-scheduleThree = WebUtility.HtmlDecode(scheduleThree).RemoveDiacritics();
 
 var donationTextSettings = new MagickReadSettings
 {
@@ -106,6 +62,128 @@ var scheduleTextSettings = new MagickReadSettings
     Height = 5
 };
 
+
+try
+{
+    var web = new HtmlWeb();
+    var runsPage = web.Load(config.RunsUrl);
+    var donationsPage = web.Load(config.DonationsUrl);
+
+
+    var eventRawText = runsPage.DocumentNode.SelectSingleNode(eventXpath);
+    if (eventRawText != null)
+    {
+        eventName = eventRawText.InnerText.Replace("Run Index\n&mdash;\n", "").Trim();
+    }
+    
+    var donationsRawText = donationsPage.DocumentNode.SelectSingleNode(donationXpath);
+
+    if (donationsRawText != null)
+    {
+        donations = donationsRawText.InnerText.Replace("\n\nTotal (Count):\n", "").Split(" ")[0];
+    }
+    
+    var runsTable = runsPage.DocumentNode.SelectSingleNode(runsXpath);
+
+    Run runOne = null;
+    Run runTwo = null;
+    Run runThree = null;
+
+    if (runsTable != null)
+    {
+        var rows = runsTable.SelectNodes("tr");
+        if (rows != null)
+        foreach (var row in rows)
+        {
+            var cells = row.SelectNodes("td");
+            Run nextRun = new Run();
+            nextRun.Title = cells[0].InnerText.Replace("\n", "");
+            nextRun.StartTime = DateTime.Parse(cells[5].InnerText);
+
+            if (nextRun.StartTime <= currentTime) // We want to keep setting run one until we find runs in the future
+            {
+                runOne = nextRun;
+            }
+            else if (runOne == null) // The first row is in the future
+            {
+                runOne = nextRun;
+            }
+            else if (runTwo == null)
+            {
+                runTwo = nextRun;
+            }
+            else if (runThree == null)
+            {
+                runThree = nextRun;
+            }
+        }
+    }
+
+    bool liveNow = runOne != null && runOne.StartTime <= currentTime;
+    bool futureSchedule = runOne != null && currentTime <= runOne.StartTime;
+    bool eventNotSoon = runOne != null && (currentTime.AddHours(23) <= runOne.StartTime);
+    bool eventOver = runOne != null && runTwo == null && runThree == null && currentTime >= runOne.StartTime.AddMinutes(30);
+    bool liveNowOneRun = liveNow && runTwo == null;
+    bool liveNowTwoRun = liveNow && runThree == null;
+    bool futureScheduleOneRun = futureSchedule && runTwo == null;
+    bool futureScheduleTwoRun = futureSchedule && runThree == null;
+
+    if (runOne == null && runTwo == null && runThree == null) // Couldn't get any runs
+    {
+        scheduleOne = "SCHEDULE";
+        scheduleTwo = "NOT";
+        scheduleThree = "PUBLISHED";
+        scheduleTextSettings.TextGravity = Gravity.Center;
+    } else if (eventNotSoon) // Event doesn't start for 23 hours
+    {
+        var timespan = runOne.StartTime - currentTime;
+        scheduleOne = "STARTS IN";
+        scheduleTwo = $"{timespan.Days} DAYS";
+        scheduleThree = $"{timespan.Hours} HOURS";
+        scheduleTextSettings.TextGravity = Gravity.Center;
+    } else if (eventOver) // Last schedule item was over 30 minutes ago (finale usually runs 5-20 minutes)
+    {
+        scheduleOne = "EVENT";
+        scheduleTwo = "IS";
+        scheduleThree = "OVER";
+        scheduleTextSettings.TextGravity = Gravity.Center;
+    } else if (futureScheduleOneRun)
+    {
+        scheduleOne = $"{runOne.StartTime.ToString("t")} - {runOne.Title}";
+    } else if (futureScheduleTwoRun)
+    {
+        scheduleOne = $"{runOne.StartTime.ToString("t")} - {runOne.Title}";
+        scheduleTwo = $"{runTwo.StartTime.ToString("t")} - {runTwo.Title}";
+    } else if (futureSchedule)
+    {
+        scheduleOne = $"{runOne.StartTime.ToString("t")} - {runOne.Title}";
+        scheduleTwo = $"{runTwo.StartTime.ToString("t")} - {runTwo.Title}";
+        scheduleThree = $"{runThree.StartTime.ToString("t")} - {runThree.Title}";
+    }
+    else if (liveNowOneRun)
+    {
+        scheduleOne = $"NOW - {runOne.Title}";
+    } else if (liveNowTwoRun)
+    {
+        scheduleOne = $"NOW - {runOne.Title}";
+        scheduleTwo = $"{runTwo.StartTime.ToString("t")} - {runTwo.Title}";
+    }
+    else
+    {
+        scheduleOne = $"NOW - {runOne.Title}";
+        scheduleTwo = $"{runTwo.StartTime.ToString("t")} - {runTwo.Title}";
+        scheduleThree = $"{runThree.StartTime.ToString("t")} - {runThree.Title}";
+    }
+} catch (Exception e)
+{
+    Console.WriteLine("Failed to get data from GDQ tracker.");
+}
+
+eventName = WebUtility.HtmlDecode(eventName).RemoveDiacritics(); 
+donations = WebUtility.HtmlDecode(donations).RemoveDiacritics();
+scheduleOne = WebUtility.HtmlDecode(scheduleOne).RemoveDiacritics();
+scheduleTwo = WebUtility.HtmlDecode(scheduleTwo).RemoveDiacritics();
+scheduleThree = WebUtility.HtmlDecode(scheduleThree).RemoveDiacritics();
 
 if (eventName.Length < 15) // 15 characters visible
 {
