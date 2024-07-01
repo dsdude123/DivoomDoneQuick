@@ -1,0 +1,42 @@
+on:
+  release:
+    types: [published]
+
+name: release-artifacts
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        ref: ${{ github.ref }}
+
+    - name: Read version information
+      id: read_version
+      uses: andstor/file-reader-action@v1
+      with:
+        path: "version.txt"
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build Release
+      run: dotnet build --no-restore --configuration Release --output ./release
+
+    - name: Package Binaries
+      run: tar -cvzf DivoomDoneQuick_${{ steps.read_version.outputs.contents }}_AnyCPU.tar ./release/*.*
+
+    - name: Github Login
+      run: gh auth login --with-token ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Upload Artifact
+      run: gh release upload ${{ github.ref }} DivoomDoneQuick_${{ steps.read_version.outputs.contents }}_AnyCPU.tar
+
