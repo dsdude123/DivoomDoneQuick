@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.0.1...v1.1.0) (2024-08-19)
+
+
+### Features
+
+* Update config for Flame Fatales 2024 ([31e325a](https://github.com/dsdude123/DivoomDoneQuick/commit/31e325a01bc625824a060e00bd10ca530d90cd3d))
+
 ## [1.0.1](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.0.0...v1.0.1) (2024-07-01)
 
 
