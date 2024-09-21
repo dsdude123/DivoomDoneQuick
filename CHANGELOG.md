@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.1.0...v1.2.0) (2024-09-21)
+
+
+### Features
+
+* Update for GDQX 2024 ([f9cbe00](https://github.com/dsdude123/DivoomDoneQuick/commit/f9cbe00bed4d039c7794c8f0e53c156865664cac))
+
 ## [1.1.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.0.1...v1.1.0) (2024-08-19)
 
 
