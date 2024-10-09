@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.2.0...v1.3.0) (2024-10-09)
+
+
+### Features
+
+* Update config for Disaster Relief Done Quick 2024 ([00af222](https://github.com/dsdude123/DivoomDoneQuick/commit/00af2228b48494b0344a1a5a3c680257b811f52d))
+
 ## [1.2.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.1.0...v1.2.0) (2024-09-21)
 
 
