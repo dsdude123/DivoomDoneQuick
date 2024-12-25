@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.3.0...v1.4.0) (2024-12-25)
+
+
+### Features
+
+* Add support to skip PixooRest call ([b5b9ead](https://github.com/dsdude123/DivoomDoneQuick/commit/b5b9eadcde5c7af703d7fb49ec2b553b3d19c88a))
+* Update config for Awesome Games Done Quick 2025 ([a8001d8](https://github.com/dsdude123/DivoomDoneQuick/commit/a8001d8b51d87e9b4bb7deef75fedb864a2cfffd))
+
 ## [1.3.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.2.0...v1.3.0) (2024-10-09)
 
 
