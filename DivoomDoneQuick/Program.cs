@@ -282,10 +282,6 @@ for (int i = 0; i < 60; i++) // Maximum 60 frames
     } 
 }
 
-#if DEBUG
-await outputCollection.WriteAsync("gdq.gif");
-#endif
-
 MemoryStream memoryStream = new MemoryStream();
 await outputCollection.WriteAsync(memoryStream, MagickFormat.Gif);
 
@@ -298,11 +294,18 @@ var byteArrayContent = new ByteArrayContent(byteData);
 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 byteArrayContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/gif");
 
-var rsp = await httpClient.PostAsync("http://localhost:5000/sendGif", new MultipartFormDataContent
+if (config.SkipRest)
+{
+    await outputCollection.WriteAsync("gdq.gif");
+} else
+{
+    var rsp = await httpClient.PostAsync("http://localhost:5000/sendGif", new MultipartFormDataContent
     {
         {byteArrayContent, "\"gif\"", "\"gdq.gif\""},
         {new StringContent("200"), "\"speed\""},
         {new StringContent("false"), "\"skip_first_frame\""}
     });
+}
+
 
 Environment.Exit(0);

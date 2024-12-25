@@ -10,5 +10,7 @@ namespace DivoomDoneQuick
     {
         public string RunsUrl { get; set; }
         public string DonationsUrl { get; set; }
+
+        public bool SkipRest { get; set; }
     }
 }

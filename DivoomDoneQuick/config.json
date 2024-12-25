@@ -1,4 +1,5 @@
 ﻿{
   "RunsUrl": "https://tracker.gamesdonequick.com/tracker/runs/AGDQ2025",
-  "DonationsUrl": "https://tracker.gamesdonequick.com/tracker/donations/AGDQ2025"
+  "DonationsUrl": "https://tracker.gamesdonequick.com/tracker/donations/AGDQ2025",
+  "SkipRest":  false
 }
