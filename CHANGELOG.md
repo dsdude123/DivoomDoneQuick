@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.4.0...v1.5.0) (2025-01-04)
+
+
+### Features
+
+* Add json output file ([b7eb9b1](https://github.com/dsdude123/DivoomDoneQuick/commit/b7eb9b141adf970a73a82f71c3c0209ac358bfe6))
+
+
+### Bug Fixes
+
+* Fix donation total scraping ([72e226a](https://github.com/dsdude123/DivoomDoneQuick/commit/72e226a878bb197eee94c6f06cac33e2adb1d1f9))
+
 ## [1.4.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.3.0...v1.4.0) (2024-12-25)
 
 
