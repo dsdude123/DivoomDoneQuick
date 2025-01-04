@@ -80,7 +80,7 @@ try
 
     if (donationsRawText != null)
     {
-        donations = donationsRawText.InnerText.Replace("\n\nTotal (Count):\n", "").Split(" ")[0];
+        donations = donationsRawText.InnerText.Replace("\n        \n            Total (Count):\n            ", "").Split(" ")[0];
     }
     
     var runsTable = runsPage.DocumentNode.SelectSingleNode(runsXpath);
@@ -184,6 +184,16 @@ donations = WebUtility.HtmlDecode(donations).RemoveDiacritics();
 scheduleOne = WebUtility.HtmlDecode(scheduleOne).RemoveDiacritics();
 scheduleTwo = WebUtility.HtmlDecode(scheduleTwo).RemoveDiacritics();
 scheduleThree = WebUtility.HtmlDecode(scheduleThree).RemoveDiacritics();
+
+CollectedData collectedData = new CollectedData();
+collectedData.eventName = eventName.Replace("Run Index\n\t\t—\n\t\t","");
+collectedData.donations = donations.Replace("\n","");
+collectedData.scheduleOne = scheduleOne.Replace("\n","").Replace("\t","");
+collectedData.scheduleTwo = scheduleTwo.Replace("\n", "").Replace("\t", "");
+collectedData.scheduleThree = scheduleThree.Replace("\n", "").Replace("\t", "");
+
+string jsonData = JsonConvert.SerializeObject(collectedData);
+File.WriteAllText("gdq.json", jsonData);
 
 if (eventName.Length < 15) // 15 characters visible
 {
