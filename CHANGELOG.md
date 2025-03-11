@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.5.0...v1.6.0) (2025-03-11)
+
+
+### Features
+
+* Update config for Frost Fatales 2025 ([561fd9b](https://github.com/dsdude123/DivoomDoneQuick/commit/561fd9b4f7b19d17c277b285b6a9389e930033b9))
+* Update config for Frost Fatales 2025 ([43af2a8](https://github.com/dsdude123/DivoomDoneQuick/commit/43af2a85b808bc8f7da75899a5db6c9f40056916))
+
 ## [1.5.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.4.0...v1.5.0) (2025-01-04)
 
 
