@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.6.0...v1.7.0) (2025-07-06)
+
+
+### Features
+
+* Update config for SGDQ 2025 ([90ea851](https://github.com/dsdude123/DivoomDoneQuick/commit/90ea851e1bd78b0a15e1bff2b70c78d3b60230ec))
+
+
+### Bug Fixes
+
+* Update for new donations tracker format ([b1357c4](https://github.com/dsdude123/DivoomDoneQuick/commit/b1357c40bdb0fb7e826c6083355a8d07925c6e84))
+
 ## [1.6.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.5.0...v1.6.0) (2025-03-11)
 
 
