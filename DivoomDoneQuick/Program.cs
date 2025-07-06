@@ -80,7 +80,7 @@ try
 
     if (donationsRawText != null)
     {
-        donations = donationsRawText.InnerText.Replace("\n        \n            Total (Count):\n            ", "").Split(" ")[0];
+        donations = donationsRawText.InnerText.Replace("\n        \n\n\n\n  \n  \n    Donation Total:\n    ", "").Split(" ")[0];
     }
     
     var runsTable = runsPage.DocumentNode.SelectSingleNode(runsXpath);
