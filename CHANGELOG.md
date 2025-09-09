@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.7.0...v1.8.0) (2025-09-09)
+
+
+### Features
+
+* Update for Flame Fatales 2025 ([538ca1c](https://github.com/dsdude123/DivoomDoneQuick/commit/538ca1ca8130027bf5307e8e253f7f95869fecb8))
+* Update for Flame Fatales 2025 ([3f3c20d](https://github.com/dsdude123/DivoomDoneQuick/commit/3f3c20d574e9f63b0ae8191efce01da8fbc2226c))
+
 ## [1.7.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.6.0...v1.7.0) (2025-07-06)
 
 
