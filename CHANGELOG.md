@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.8.0...v1.9.0) (2026-01-05)
+
+
+### Features
+
+* Update for AGDQ 2026 ([b6fc6e9](https://github.com/dsdude123/DivoomDoneQuick/commit/b6fc6e9a7b3c62f30a0face37354f6d31bfbad2c))
+
 ## [1.8.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.7.0...v1.8.0) (2025-09-09)
 
 
