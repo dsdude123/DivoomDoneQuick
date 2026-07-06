@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.10.0...v1.11.0) (2026-07-06)
+
+
+### Features
+
+* Update URLs for SGDQ 2026 in config.json ([b593f6a](https://github.com/dsdude123/DivoomDoneQuick/commit/b593f6a3c3f9dd873081e56675c7e2eb8f176c30))
+* Update URLs for SGDQ 2026 in config.json ([cebefdf](https://github.com/dsdude123/DivoomDoneQuick/commit/cebefdf78992d2be2fb98273077bbbbe40a83db7))
+
 ## [1.10.0](https://github.com/dsdude123/DivoomDoneQuick/compare/v1.9.0...v1.10.0) (2026-03-06)
 
 
